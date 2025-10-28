@@ -1,0 +1,19 @@
+% Projet BDD - Site de partage d'images
+
+Categorie: idCategorie, nom
+PREFERE, 0N Utilisateur, 0N Categorie
+Utilisateur: idUtilisateur, identifiant, mdp, nom, prenom, date_naissance, email, pays, abonne_newsletter
+DETIENT, 0N Utilisateur, 11 Album
+:
+
+REPERTORIER, 0N Categorie, 0N Image
+POST, 0N Utilisateur, 11 Image
+COMMENTE, 0N Utilisateur, 0N Image: texte
+LIKE, 0N Utilisateur, 0N Image: date
+Album: idAlbum, titre, description, date_creation, visibilite
+
+Label: idLabel, nom
+SON LABEL, 0N Image, 0N Label
+Image: idImage, titre, description, date_publication, format, taille, visibilite, pays_origine, telechargeable
+APPARTIENT, 0N Album, 0N Image
+ImageArchive: idImage, titre, description, date_publication, format, taille, pays_origine, telechargeable
