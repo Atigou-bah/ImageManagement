@@ -47,7 +47,7 @@
 - **idCategorie** est la clé primaire de la table elle ne doit pas être nulle et non modifiable.
 -- **nom** doit pas être vide et il est unique dans la table 
 
-### Categorie
+### LABEL
 - **idLabel** est la clé primaire de la table elle ne doit pas être nulle et non modifiable.
 -- **nom** doit pas être vide et il est unique dans la table 
 

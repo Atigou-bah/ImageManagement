@@ -6,7 +6,7 @@ Utilisateur: idUtilisateur, identifiant, mdp, nom, prenom, date_naissance, email
 DETIENT, 0N Utilisateur, 11 Album
 :
 
-REPERTORIER, 0N Categorie, 0N Image
+REPERTORIER, 0N Categorie, 11 Image
 POST, 0N Utilisateur, 11 Image
 COMMENTE, 0N Utilisateur, 0N Image: texte
 LIKE, 0N Utilisateur, 0N Image: date
