@@ -7,7 +7,7 @@
 
 ### Utilisateur 
 - **idUtilisateur** est la clé primaire de la table elle ne doit pas être nulle et non modifiable.
-- **identifiant** qui est le login de la personne doit être unique dans la base de données(verification via une procédure/fonction). 
+- **identifiant** qui est le login de la personne doit être unique dans la base de données. 
 - **mdp** le mot de passe doit pas être vide et doit avoir minimum 8 caractères avec des caractères spéciaux. 
 - **nom** et **prenom** sont obligatoires. 
 - **date_naissance** doit avoir un format valide. 

@@ -32,7 +32,29 @@ for _ in range(N):
         VALUES (:1, :2, :3, :4, TO_DATE(:5, 'YYYY-MM-DD'), :6, :7, :8)
     """, (identifiant, mdp, nom, prenom, date_naissance, email, pays, abonne_newsletter))
 
+
+print(f"{N} utilisateurs insérés avec succès ✅")
+
+"Image"
+
+for _ in range(N): 
+    titre = fake.word()
+    description = fake.sentence()
+    id_utilisateur = random.randint(1,N)
+    date_pub = fake.date_between(start_date='-1y', end_date='today')
+    format = random.choice(["png","svg","jpeg","jpg"])
+    taille = random.randint(0,100)
+    visibilite = random.choice([0,1])
+    pays_origine = fake.country()
+    telechargeable = random.choice([0,1]) 
+
+    cur.execute("""
+        INSERT INTO IMAGE (titre, id_utilisateur, description, date_publication, format, taille, visibilite, pays_origine, telechargeable)
+        VALUES (:1, :2, :3, TO_DATE(:4, 'YYYY-MM-DD'),:5, :6, :7, :8,:9)
+    """, (titre,id_utilisateur, description, date_pub, format, taille, visibilite, pays_origine, telechargeable))
+
+print(f"{N} image insérés avec succès ✅")
+
 conn.commit()
 cur.close()
-conn.close()
-print(f"{N} utilisateurs insérés avec succès ✅")
+conn.close() 
