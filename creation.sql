@@ -38,6 +38,8 @@ CREATE TABLE LABEL (
 
 CREATE TABLE IMAGE (
     idImage NUMBER(8) GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    idUtilisateur NUMBER(8),
+    idCategorie NUMBER(8),
     titre VARCHAR2(255) NOT NULL,
     date_publication DATE NOT NULL,
     format VARCHAR2(10) NOT NULL,
@@ -45,8 +47,6 @@ CREATE TABLE IMAGE (
     visibilite NUMBER(1) DEFAULT 0 CHECK (visibilite IN (0,1)),
     pays VARCHAR2(255),
     telechargeables NUMBER(1) DEFAULT 0 CHECK (telechargeables IN (0,1)),
-    idUtilisateur NUMBER(8),
-    idCategorie NUMBER(8),
     CONSTRAINT fk_idutilisateur FOREIGN KEY (idUtilisateur) REFERENCES UTILISATEUR(idUtilisateur),
     CONSTRAINT fk_idcategorie FOREIGN KEY (idCategorie) REFERENCES CATEGORIE(idCategorie)
 );
@@ -66,11 +66,11 @@ CREATE TABLE IMAGEARCHIVER (
 
 CREATE TABLE ALBUM (
     idAlbum NUMBER(8) GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    titre VARCHAR2(255) UNIQUE NOT NULL,
+    idUtilisateur NUMBER(8) NOT NULL,
+    titre VARCHAR2(255) NOT NULL,
     description VARCHAR2(255),
-    date_creation DATE,
+    date_creation DATE NOT NULL,
     visibilite NUMBER(1) DEFAULT 0 CHECK (visibilite IN (0,1)),
-    idUtilisateur NUMBER(8),
     CONSTRAINT fk_idutilisateur_album FOREIGN KEY (idUtilisateur) REFERENCES UTILISATEUR(idUtilisateur)
 );
 
