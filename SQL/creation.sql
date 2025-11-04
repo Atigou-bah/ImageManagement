@@ -54,6 +54,7 @@ CREATE TABLE IMAGE (
     idImage NUMBER(8)           GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     idUtilisateur NUMBER(8),
     idCategorie NUMBER(8),
+    description VARCHAR(255) 
     titre VARCHAR2(255)         NOT NULL,
     date_publication DATE       NOT NULL,
     format VARCHAR2(10)         NOT NULL,
@@ -75,7 +76,7 @@ CREATE TABLE IMAGEARCHIVE (
     titre VARCHAR2(255)         NOT NULL,
     date_publication DATE       NOT NULL,
     format VARCHAR2(10)         NOT NULL,
-    taille NUMBER(8)            NOT NULL,
+    taille NUMBER(8)            NOT NULL CHECK(taille > 0) 
     visibilite NUMBER(1) DEFAULT 0 CHECK (visibilite IN (0,1)),
     pays VARCHAR2(255),
     telechargeables NUMBER(1) DEFAULT 0 CHECK (telechargeables IN (0,1))
