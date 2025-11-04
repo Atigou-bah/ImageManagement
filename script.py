@@ -1,28 +1,33 @@
-from faker import Faker
-import random
-import oracledb
-import getpass
+    from faker import Faker
+    import random
+    import oracledb
+    import getpass
 
-# ==============================
-# ⚙️ CONFIGURATION GÉNÉRALE
-# ==============================
-fake = Faker('fr_FR')
+    # ==============================
+    # ⚙️ CONFIGURATION GÉNÉRALE
+    # ==============================
+    fake = Faker('fr_FR')
 
-DB_USER = "bahm"
-DB_PASS = getpass.getpass("Mot de passe Oracle : ")
-dsn = "(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=oracle.unistra.fr)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=ORCLPDB1)))"
+    # Active le mode thick
+    oracledb.init_oracle_client()
+
+    DB_USER = "ton_user"
+    DB_PASS = "mdp"
+    DB_HOST = "osr-oracle.unistra.fr"
+    DB_PORT = 1521
+    DB_SERVICE = "osr"  # service name récupéré depuis DBeaver
+
+    # DSN avec service_name
+    dsn = f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={DB_HOST})(PORT={DB_PORT}))(CONNECT_DATA=(SERVICE_NAME={DB_SERVICE})))"
+
+    print("Connexion à Oracle...")
+    conn = oracledb.connect(user=DB_USER, password=DB_PASS, dsn=dsn)
+    print("Connecté !")
+
 
 # Nombre d’éléments à générer
 N = 50          # utilisateurs, albums, etc.
 N_images = 100  # images
-
-# ==============================
-# 🔗 CONNEXION ORACLE
-# ==============================
-print("\nConnexion à Oracle...")
-conn = oracledb.connect(user=DB_USER, password=DB_PASS, dsn=dsn)
-cur = conn.cursor()
-print("✅ Connexion Oracle réussie !\n")
 
 # ==============================
 # 1️⃣ UTILISATEURS
@@ -90,7 +95,7 @@ for _ in range(N_images):
     telechargeable = random.choice([0, 1])
 
     cur.execute("""
-        INSERT INTO IMAGE (idUtilisateur, idCategorie,description titre, date_publication, format, taille, visibilite, pays, telechargeables)
+        INSERT INTO IMAGE (idUtilisateur, idCategorie,description,titre, date_publication, format, taille, visibilite, pays, telechargeables)
         VALUES (:1, :2, :3, :4, TO_DATE(:5, 'YYYY-MM-DD'), :6, :7, :8, :9,:10)
     """, (id_utilisateur, id_categorie, description, titre, date_pub, format_img, taille, visibilite, pays_origine, telechargeable))
 
