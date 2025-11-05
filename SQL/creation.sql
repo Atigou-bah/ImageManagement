@@ -74,6 +74,7 @@ CREATE TABLE IMAGE (
 CREATE TABLE IMAGEARCHIVE (
     idImage NUMBER(8),
     titre VARCHAR2(255)         NOT NULL,
+    description VARCHAR(255),
     date_publication DATE       NOT NULL,
     format VARCHAR2(10)         NOT NULL,
     taille NUMBER(8)            NOT NULL CHECK(taille > 0),
