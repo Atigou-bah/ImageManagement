@@ -1,28 +1,28 @@
-    from faker import Faker
-    import random
-    import oracledb
-    import getpass
+from faker import Faker
+import random
+import oracledb
+import getpass
 
-    # ==============================
-    # ⚙️ CONFIGURATION GÉNÉRALE
-    # ==============================
-    fake = Faker('fr_FR')
+# ==============================
+# ⚙️ CONFIGURATION GÉNÉRALE
+# ==============================
+fake = Faker('fr_FR')
 
-    # Active le mode thick
-    oracledb.init_oracle_client()
+# Active le mode thick
+oracledb.init_oracle_client()
 
-    DB_USER = "ton_user"
-    DB_PASS = "mdp"
-    DB_HOST = "osr-oracle.unistra.fr"
-    DB_PORT = 1521
-    DB_SERVICE = "osr"  # service name récupéré depuis DBeaver
+DB_USER = "bahm"
+DB_PASS = "Atiouba23"
+DB_HOST = "osr-oracle.unistra.fr"
+DB_PORT = 1521
+DB_SERVICE = "osr"  # service name récupéré depuis DBeaver
 
-    # DSN avec service_name
-    dsn = f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={DB_HOST})(PORT={DB_PORT}))(CONNECT_DATA=(SERVICE_NAME={DB_SERVICE})))"
+# DSN avec service_name
+dsn = f"(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={DB_HOST})(PORT={DB_PORT}))(CONNECT_DATA=(SERVICE_NAME={DB_SERVICE})))"
 
-    print("Connexion à Oracle...")
-    conn = oracledb.connect(user=DB_USER, password=DB_PASS, dsn=dsn)
-    print("Connecté !")
+print("Connexion à Oracle...")
+conn = oracledb.connect(user=DB_USER, password=DB_PASS, dsn=dsn)
+print("Connecté !")
 
 
 # Nombre d’éléments à générer
