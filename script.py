@@ -12,7 +12,7 @@ fake = Faker('fr_FR')
 oracledb.init_oracle_client()
 
 DB_USER = "bahm"
-DB_PASS = "Atiouba23"
+DB_PASS = "Atigoubah23"
 DB_HOST = "osr-oracle.unistra.fr"
 DB_PORT = 1521
 DB_SERVICE = "osr"  # service name récupéré depuis DBeaver

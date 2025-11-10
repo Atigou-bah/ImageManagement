@@ -36,17 +36,17 @@ HAVING Count(DISTINCT l.idUtilisateur) >= 5;
 -- Les images les plus populaires recente sur les 14 derniers jours 
 -- **********************************************************
 
--- CREATE VIEW image_populaire_recentes AS 
--- SELECT 
---     i.IDIMAGE,
---     i.titre AS titre_image,
---     i.DESCRIPTION,
---     COUNT(l.idUtilisateur) AS nb_likes
--- FROM IMAGE i
--- JOIN LIKES l ON i.IDIMAGE = l.IDIMAGE
--- WHERE TRUNC(SYSDATE) - TRUNC(l.date_like) <= 14
--- GROUP BY i.IDIMAGE, i.titre, i.DESCRIPTION
--- HAVING COUNT(DISTINCT l.idUtilisateur) >= 1;
+CREATE VIEW image_populaire_recentes AS 
+SELECT 
+    i.IDIMAGE,
+    i.titre AS titre_image,
+    i.DESCRIPTION,
+    COUNT(l.idUtilisateur) AS nb_likes
+FROM IMAGE i
+JOIN LIKES l ON i.IDIMAGE = l.IDIMAGE
+WHERE TRUNC(SYSDATE) - TRUNC(l.date_like) <= 14
+GROUP BY i.IDIMAGE, i.titre, i.DESCRIPTION
+HAVING COUNT(DISTINCT l.idUtilisateur) >= 1;
 
 
 
