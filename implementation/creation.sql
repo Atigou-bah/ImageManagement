@@ -9,6 +9,7 @@ DROP TABLE IMAGE CASCADE CONSTRAINTS;
 DROP TABLE LABEL CASCADE CONSTRAINTS;
 DROP TABLE CATEGORIE CASCADE CONSTRAINTS;
 DROP TABLE UTILISATEUR CASCADE CONSTRAINTS;
+DROP TABLE NEWSLETTER CASCADE CONSTRAINTS;
 
 -- *****************************************************************
 -- UTILISATEUR 
@@ -16,13 +17,13 @@ DROP TABLE UTILISATEUR CASCADE CONSTRAINTS;
 
 CREATE TABLE UTILISATEUR (
     idUtilisateur NUMBER(8)     GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    identifiant VARCHAR2(255)   UNIQUE NOT NULL,
-    mdp VARCHAR2(255)           NOT NULL,
-    nom VARCHAR2(255)           NOT NULL,
-    prenom VARCHAR2(255)        NOT NULL,
+    identifiant NVARCHAR2(255)   UNIQUE NOT NULL,
+    mdp NVARCHAR2(255)           NOT NULL,
+    nom NVARCHAR2(255)           NOT NULL,
+    prenom NVARCHAR2(255)        NOT NULL,
     date_naissance DATE         NOT NULL,
-    email VARCHAR2(255)         UNIQUE NOT NULL,
-    pays VARCHAR2(255)          NOT NULL,
+    email NVARCHAR2(255)         UNIQUE NOT NULL,
+    pays NVARCHAR2(255)          NOT NULL,
     abonne_newsletter NUMBER(1) DEFAULT 0 CHECK (abonne_newsletter IN (0, 1)),
     CONSTRAINT mdf_contraint CHECK (LENGTH(mdp) >= 8)
 );
@@ -33,7 +34,7 @@ CREATE TABLE UTILISATEUR (
 
 CREATE TABLE CATEGORIE (
     idCategorie NUMBER(8)   GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nom VARCHAR2(255)       UNIQUE NOT NULL
+    nom NVARCHAR2(255)       UNIQUE NOT NULL
 );
 
 -- *****************************************************************
@@ -42,7 +43,7 @@ CREATE TABLE CATEGORIE (
 
 CREATE TABLE LABEL (
     idLabel NUMBER(8)       GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    nom VARCHAR2(255)       UNIQUE NOT NULL
+    nom NVARCHAR2(255)       UNIQUE NOT NULL
 );
 
 -- *****************************************************************
@@ -53,13 +54,13 @@ CREATE TABLE IMAGE (
     idImage NUMBER(8)           GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     idUtilisateur NUMBER(8),
     idCategorie NUMBER(8),
-    description VARCHAR(255),
-    titre VARCHAR2(255)         NOT NULL,
+    description NVARCHAR2(255),
+    titre NVARCHAR2(255)         NOT NULL,
     date_publication DATE       NOT NULL,
-    format VARCHAR2(10)         NOT NULL,
+    format NVARCHAR2(10)         NOT NULL,
     taille NUMBER(8)            NOT NULL CHECK(taille > 0),
     visibilite NUMBER(1) DEFAULT 0 CHECK (visibilite IN (0,1)),
-    pays VARCHAR2(255),
+    pays NVARCHAR2(255),
     telechargeables NUMBER(1) DEFAULT 0 CHECK (telechargeables IN (0,1)),
     CONSTRAINT fk_idutilisateur FOREIGN KEY (idUtilisateur)
         REFERENCES UTILISATEUR(idUtilisateur) ON DELETE CASCADE,
@@ -73,13 +74,13 @@ CREATE TABLE IMAGE (
 
 CREATE TABLE IMAGEARCHIVE (
     idImage NUMBER(8),
-    titre VARCHAR2(255)         NOT NULL,
-    description VARCHAR(255),
+    titre NVARCHAR2(255)         NOT NULL,
+    description NVARCHAR2(255),
     date_publication DATE       NOT NULL,
-    format VARCHAR2(10)         NOT NULL,
+    format NVARCHAR2(10)         NOT NULL,
     taille NUMBER(8)            NOT NULL CHECK(taille > 0),
     visibilite NUMBER(1) DEFAULT 0 CHECK (visibilite IN (0,1)),
-    pays VARCHAR2(255),
+    pays NVARCHAR2(255),
     telechargeables NUMBER(1) DEFAULT 0 CHECK (telechargeables IN (0,1))
 );
 
@@ -90,8 +91,8 @@ CREATE TABLE IMAGEARCHIVE (
 CREATE TABLE ALBUM (
     idAlbum NUMBER(8)           GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     idUtilisateur NUMBER(8)     NOT NULL,
-    titre VARCHAR2(255)         NOT NULL,
-    description VARCHAR2(255),
+    titre NVARCHAR2(255)         NOT NULL,
+    description NVARCHAR2(255),
     date_creation DATE          NOT NULL,
     visibilite NUMBER(1) DEFAULT 0 CHECK (visibilite IN (0,1)),
     CONSTRAINT fk_idutilisateur_album FOREIGN KEY (idUtilisateur)
@@ -120,7 +121,7 @@ CREATE TABLE LIKES (
 CREATE TABLE COMMENTE (
     idImage NUMBER(8),
     idUtilisateur NUMBER(8),
-    texte VARCHAR2(255)         NOT NULL,
+    texte NVARCHAR2(255)         NOT NULL,
     CONSTRAINT pk_comment PRIMARY KEY(idImage, idUtilisateur),
     CONSTRAINT fk_comment_image FOREIGN KEY (idImage)
         REFERENCES IMAGE(idImage) ON DELETE CASCADE,
@@ -176,7 +177,7 @@ CREATE TABLE APPARTIENT (
 -- ***************************************************************** 
 CREATE TABLE NEWSLETTER(
     idNewsletter NUMBER(8)           GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    description varchar2(255),
+    description NVARCHAR2(255),
     image CLOB NOT NULL, 
     date_envoi date DEFAULT SYSDATE
     ); 

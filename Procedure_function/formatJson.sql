@@ -16,12 +16,7 @@ BEGIN
     FROM image i 
     JOIN utilisateur u 
     ON u.idUtilisateur = i.idUtilisateur 
-    JOIN categorie c 
-    ON i.idCategorie = c.idCategorie  
-    JOIN likes l 
-    ON l.idImage = i.idImage
-    WHERE i.idImage = id
-    GROUP BY i.idImage, i.titre, i.description, u.nom, c.nom; 
+    JOIN categorie c SELECT formatjson(1) FROM dual; iption, u.nom, c.nom; 
 
 
     RETURN json_o; 
