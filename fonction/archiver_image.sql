@@ -1,25 +1,16 @@
-CREATE OR REPLACE PROCEDURE archiverImage(id Image.idImage%TYPE) IS
-    idImage Image.idImage%TYPE;
-    titre   Image.titre%TYPE;
-    description Image.description%TYPE;
+CREATE OR REPLACE PROCEDURE archiverImage(p_id IN Image.idImage%TYPE) IS
+    v_test NUMBER := 0;
 BEGIN
-    DELETE FROM likes WHERE idImage = id;
-    DELETE FROM son_label WHERE idImage = id;
-    DELETE FROM APPARTIENT WHERE idImage = id; 
-    DELETE FROM COMMENTE WHERE idImage = id; 
-    DELETE FROM LIKES WHERE idImage = id; 
-    DELETE FROM IMAGE WHERE idImage = id;
+    -- Vérifier si l'image existe
+    SELECT COUNT(*) INTO v_test 
+    FROM Image 
+    WHERE idImage = p_id;
 
-    SELECT idImage, titre, description
-    INTO idImage, titre, description
-    FROM IMAGEARCHIVE
-    WHERE idImage = id;
-
-    -- Afficher
-    DBMS_OUTPUT.PUT_LINE('Image ' || idImage || ' : ' || titre || ' archivée avec succès');
-
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('Aucune image trouvée avec l’ID ' || id);
+    IF v_test = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Aucune image trouvée avec l’ID ' || p_id);
+    ELSE
+        DELETE FROM Image WHERE idImage = p_id;
+        DBMS_OUTPUT.PUT_LINE('Image ' || p_id || ' supprimée et archivée (via trigger) avec succès');
+    END IF;
 END;
 /

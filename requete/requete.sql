@@ -41,14 +41,35 @@ FROM UTILISATEUR u;
 -- valeur absolue de cette différence.
 
 
+--Pour cette requête j'ai decidé de definir une vue pour facilité la requêtes ;
+-- Pour avoir le resulat demandé on fait juste une requete sur la vue pays_like; 
 
-CREATE OR REPLACE VIEW pays_like_count AS
-SELECT
-    i.idImage,
-    u.pays AS pays_like,
-    COUNT(*) AS nb_likes
-FROM IMAGE i
-JOIN LIKES l ON i.idImage = l.idImage
-JOIN UTILISATEUR u ON l.idUtilisateur = u.idUtilisateur
-GROUP BY i.idImage, u.pays
-ORDER BY i.idImage, nb_likes DESC;
+CREATE INDEX idx_idImage ON IMAGE(idImage);
+CREATE INDEX idx_pays ON UTILISATEUR(pays);
+
+
+    -- CREATE OR REPLACE VIEW pays_like AS
+    -- SELECT
+    --     i.idImage,
+    --     u.pays AS pays_like,
+    --     COUNT(*) AS nb_likes
+    -- FROM IMAGE i
+    -- JOIN LIKES l ON i.idImage = l.idImage
+    -- JOIN UTILISATEUR u ON l.idUtilisateur = u.idUtilisateur
+    -- GROUP BY i.idImage, u.pays
+    -- ORDER BY i.idImage, nb_likes DESC;
+
+SELECT 
+    idImage,
+    Max(NB_LIKES ) - min(NB_LIKES )  AS difference, 
+FROM pays_like
+GROUP BY idImage;
+
+
+
+-- Les images qui ont au moins deux fois plus de likes que la moyenne des images
+-- de leur catégorie.
+
+
+
+
