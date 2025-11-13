@@ -34,19 +34,23 @@ GROUP BY i.IDIMAGE , i.titre , i.DESCRIPTION
 HAVING Count(DISTINCT l.idUtilisateur) >= 5; 
 
 -- *********************************************************
--- Les images les plus populaires recente sur les 14 derniers jours 
+-- Les images les plus populaires dans la semaine 
 -- **********************************************************
 
-CREATE VIEW image_populaire_recentes AS 
+CREATE OR REPLACE VIEW   image_populaire_recentes AS 
 SELECT 
     i.IDIMAGE,
     i.titre AS titre_image,
     i.DESCRIPTION,
+    c.idCategorie, 
+    c.nom AS categorie,
     COUNT(l.idUtilisateur) AS nb_likes
 FROM IMAGE i
 JOIN LIKES l ON i.IDIMAGE = l.IDIMAGE
-WHERE TRUNC(SYSDATE) - TRUNC(l.date_like) <= 14
-GROUP BY i.IDIMAGE, i.titre, i.DESCRIPTION
+JOIN CATEGORIE c 
+ON c.idCategorie = i.idCategorie
+WHERE TRUNC(SYSDATE) - TRUNC(l.date_like) <= 7 
+GROUP BY i.IDIMAGE, i.titre, i.DESCRIPTION,c.idCategorie,c.nom
 HAVING COUNT(DISTINCT l.idUtilisateur) >= 1;
 
 
@@ -57,7 +61,7 @@ HAVING COUNT(DISTINCT l.idUtilisateur) >= 1;
 CREATE OR REPLACE VIEW pays_like AS
 SELECT
     i.idImage,
-    u.pays AS pays_like,
+    u.pays AS pays_like,pour avoir les nb de like par pays pour chaque image 
     COUNT(*) AS nb_likes
 FROM IMAGE i
 JOIN LIKES l ON i.idImage = l.idImage
@@ -67,4 +71,17 @@ ORDER BY i.idImage, nb_likes DESC;
 
 
 
-
+-- *********************************************************
+-- une vue avec les image populaire recent avec leur categorie 
+-- **********************************************************
+CREATE OR REPLACE VIEW   image_populaire_recentes AS 
+SELECT 
+    i.IDIMAGE,
+    i.titre AS titre_image,
+    i.DESCRIPTION,
+    COUNT(l.idUtilisateur) AS nb_likes
+FROM IMAGE i
+JOIN LIKES l ON i.IDIMAGE = l.IDIMAGE
+WHERE TRUNC(SYSDATE) - TRUNC(l.date_like) <= 7 
+GROUP BY i.IDIMAGE, i.titre, i.DESCRIPTION
+HAVING COUNT(DISTINCT l.idUtilisateur) >= 1;

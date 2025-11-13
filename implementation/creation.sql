@@ -169,3 +169,14 @@ CREATE TABLE APPARTIENT (
     CONSTRAINT fk_appartient_image FOREIGN KEY (idImage)
         REFERENCES IMAGE(idImage) ON DELETE CASCADE
 );
+
+
+-- *****************************************************************
+-- Newsletter   
+-- ***************************************************************** 
+CREATE TABLE NEWSLETTER(
+    idNewsletter NUMBER(8)           GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    description varchar2(255),
+    image CLOB NOT NULL, 
+    date_envoi date DEFAULT SYSDATE
+    ); 
