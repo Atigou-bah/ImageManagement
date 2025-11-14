@@ -1,57 +1,55 @@
-CREATE OR REPLACE FUNCTION listeImage(id UTILISATEUR.idUtilisateur%TYPE) 
+CREATE OR REPLACE FUNCTION listeImage(p_id UTILISATEUR.idUtilisateur%TYPE) 
 RETURN CLOB IS
 
-CURSOR curseurCat is (
-    SELECT *
-    FROM PREFERE 
-    WHERE idUtilisateur = id); 
+    CURSOR curseurCat IS 
+        SELECT * 
+        FROM PREFERE 
+        WHERE idUtilisateur = p_id;
 
-CURSOR curseurIm is (
-    SELECT *
-    FROM image_populaire_recentes
-    ); 
+    CURSOR curseurIm IS 
+        SELECT * 
+        FROM image_populaire_recentes;
 
     json_liste CLOB := '{"Images": [';
-    premier BOOLEAN := TRUE; 
-    --image_vu NUMBER := 0; 
-    compteur NUMBER := 0; 
+    premier BOOLEAN := TRUE;
+    compteur NUMBER := 0;
 
 BEGIN
-    FOR courantCat in curseurCat 
-    LOOP 
-        FOR courantIm in curseurIm 
-        LOOP 
-            -- SELECT 
-            -- count(*)
-            -- into image_vu 
-            -- FROM likes l 
-            -- where l.idImage = courantIm.idImage AND l.idUtilisateur = id; -- verifier si l'utilisateur à deja like l'image ca sert a rien de lui conseillé l'image 
+    FOR courantCat IN curseurCat LOOP
+        FOR courantIm IN curseurIm LOOP
 
-            IF NOT premier THEN
-                json_liste := json_liste || ',';
-            END IF;
+            -- Vérifie que l'image correspond à la catégorie préférée
+            IF courantCat.idCategorie = courantIm.idCategorie THEN
 
-            premier := FALSE;
+                -- Ajoute la virgule seulement si ce n'est pas la première image
+                IF NOT premier THEN
+                    json_liste := json_liste || ',';
+                END IF;
 
-            IF courantCat.idCategorie = courantIm.idCategorie --AND image_vu = 0 
-                THEN 
-                    json_liste := json_liste || 
+                -- Ajout de l'image au JSON
+                json_liste := json_liste || 
                     '{"id": ' || courantIm.idImage ||
-                    ', "titre": "' || REPLACE(courantIM.titre_image, '"', '\"') || '"' ||
-                    ', "nb_likes": "' || REPLACE(courantIm.nb_likes, '"', '\"') || '"' ||
+                    ', "titre": "' || REPLACE(courantIm.titre_image, '"', '\"') || '"' ||
+                    ', "nb_likes": "' || courantIm.nb_likes || '"' ||
                     ', "categorie": "' || REPLACE(courantIm.categorie, '"', '\"') || '"' ||
                     '}';
-                    compteur := compteur + 1 ; 
-            END IF; 
-        END LOOP; 
-    END LOOP; 
+
+                premier := FALSE;  -- Marque que le premier élément a été ajouté
+                compteur := compteur + 1;
+            END IF;
+
+        END LOOP;
+    END LOOP;
+
     json_liste := json_liste || ']}';
-    IF compteur != 0 THEN 
-            DBMS_OUTPUT.PUT_LINE(' nombre d image conseillees ' || compteur );
+
+    IF compteur != 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Nombre d images conseillées : ' || compteur);
     ELSE
         RAISE_APPLICATION_ERROR(-20001, 'Aucune image trouvée.');
     END IF;
+
     RETURN json_liste;
-END; 
+
+END;
 /
-      

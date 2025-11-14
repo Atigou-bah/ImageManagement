@@ -51,4 +51,15 @@ BEGIN
 END;
 /
 
+CREATE OR REPLACE TRIGGER image_format
+BEFORE INSERT ON IMAGE
+FOR EACH ROW
+BEGIN
+   IF :NEW.format IS NOT NULL AND LOWER(:NEW.format) NOT IN (
+            'png', 'svg', 'jpg', 'jpeg'
+        ) THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Le format n''est pas valide.');
+    END IF;
+END;
+/
 
