@@ -130,7 +130,7 @@ with open(sql_file, "w", encoding="utf-8") as f:
     f.write("-- ======= LIKES =======\n")
     for _ in range(N):
         id_image = random.randint(1, N_images)
-        nombre_like = random.randint(0, 5)
+        nombre_like = random.randint(0, 15)
         for _ in range(nombre_like):
             date_like = random_datetime_november_2025()
             id_utilisateur = random.randint(1, N)
@@ -147,7 +147,7 @@ with open(sql_file, "w", encoding="utf-8") as f:
     f.write("-- ======= COMMENTAIRES =======\n")
     for _ in range(N):
         id_image = random.randint(1, N_images)
-        nombre_commente = random.randint(0, 5)
+        nombre_commente = random.randint(0, 15)
         for _ in range(nombre_commente):
             texte = fake.sentence(nb_words=10).replace("'", "''")
             id_utilisateur = random.randint(1, N)
@@ -191,7 +191,7 @@ with open(sql_file, "w", encoding="utf-8") as f:
     f.write("-- ======= APPARTIENT =======\n")
     for _ in range(N):
         id_album = random.randint(1, N)
-        nb_image = random.randint(0, 5)
+        nb_image = random.randint(0, 7)
         for _ in range(nb_image):
             id_image = random.randint(1, N_images)
             f.write(
