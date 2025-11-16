@@ -21,7 +21,6 @@ BEGIN
             -- Vérifie que l'image correspond à la catégorie préférée
             IF courantCat.idCategorie = courantIm.idCategorie THEN
 
-                -- Ajoute la virgule seulement si ce n'est pas la première image
                 IF NOT premier THEN
                     json_liste := json_liste || ',';
                 END IF;
@@ -34,7 +33,7 @@ BEGIN
                     ', "categorie": "' || REPLACE(courantIm.categorie, '"', '\"') || '"' ||
                     '}';
 
-                premier := FALSE;  -- Marque que le premier élément a été ajouté
+                premier := FALSE; 
                 compteur := compteur + 1;
             END IF;
 

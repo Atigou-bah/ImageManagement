@@ -11,7 +11,7 @@ BEGIN
     FROM Album 
     WHERE idUtilisateur = :NEW.idUtilisateur;
 
-	IF nb_create > nb 
+	IF nb_create >= nb 
 		THEN RAISE_APPLICATION_ERROR(-20001, 'nombre maximum d album atteint'); 
 	END IF; 
 END; 

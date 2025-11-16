@@ -5,7 +5,7 @@ DECLARE
     date_time   DATE;
     idUser      UTILISATEUR.idUtilisateur%TYPE;
     diff_sec    NUMBER;
-    x           NUMBER := 5; -- nombre de secondes minimum entre deux insertions
+    x           NUMBER := 1; -- nombre de secondes minimum entre deux insertions
 BEGIN
     idUser := :NEW.idUtilisateur;
 
@@ -15,11 +15,11 @@ BEGIN
     WHERE idUtilisateur = idUser;
 
     IF date_time IS NOT NULL THEN
-        diff_sec := (SYSDATE - date_time) * 24 * 60 * 60;
+        diff_sec := (:New.date_publication - date_time) * 24 * 60 * 60;
 
         IF diff_sec < x THEN
             RAISE_APPLICATION_ERROR(-20001,
-                'Impossible d''insérer deux images en moins de ' || x || ' secondes');
+                'Impossible d''insérer plusieurs images en moins de ' || x || ' secondes');
         END IF;
     END IF;
 END;

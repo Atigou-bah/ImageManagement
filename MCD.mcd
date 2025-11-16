@@ -5,6 +5,7 @@ PREFERE, 0N Utilisateur, 0N Categorie
 Utilisateur: idUtilisateur, identifiant, mdp, nom, prenom, date_naissance, email, pays, abonne_newsletter
 DETIENT, 0N Utilisateur, 11 Album
 :
+Newsletter: idNewsletter, description, image, date_envoi
 
 REPERTORIER, 0N Categorie, 11 Image
 POST, 0N Utilisateur, 11 Image

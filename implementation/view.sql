@@ -1,4 +1,4 @@
-DROP VIEW categories_populaire;
+-- DROP VIEW categories_populaire;
 DROP VIEW image_populaire_recentes;
 DROP VIEW pays_like;
 
@@ -7,20 +7,20 @@ DROP VIEW pays_like;
 -- **********************************************************
 
 
-CREATE OR REPLACE VIEW categories_populaire AS 
-SELECT 
-    c.nom AS nom_categorie,
-    COUNT(DISTINCT l.idImage) AS nb_images_likes
-FROM CATEGORIE c
-JOIN IMAGE i ON i.IDCATEGORIE = c.IDCATEGORIE
-JOIN LIKES l ON l.IDIMAGE = i.IDIMAGE
-GROUP BY c.nom
-HAVING COUNT(DISTINCT l.IDIMAGE) >= 2;
+-- CREATE OR REPLACE VIEW categories_populaire AS 
+-- SELECT 
+--     c.nom AS nom_categorie,
+--     COUNT(DISTINCT l.idImage) AS nb_images_likes
+-- FROM CATEGORIE c
+-- JOIN IMAGE i ON i.IDCATEGORIE = c.IDCATEGORIE
+-- JOIN LIKES l ON l.IDIMAGE = i.IDIMAGE
+-- GROUP BY c.nom
+-- HAVING COUNT(DISTINCT l.IDIMAGE) >= 2;
 
 
 
 -- *********************************************************
--- Les images les plus populaires dans la semaine 
+-- Les images les plus populaires dans la semaine, au moins 5 likes
 -- **********************************************************
 
 CREATE OR REPLACE VIEW   image_populaire_recentes AS 
@@ -35,9 +35,9 @@ FROM IMAGE i
 JOIN LIKES l ON i.IDIMAGE = l.IDIMAGE
 JOIN CATEGORIE c 
 ON c.idCategorie = i.idCategorie
-WHERE TRUNC(SYSDATE) - TRUNC(l.date_like) <= 7 
+WHERE TRUNC(SYSDATE) - TRUNC(i.date_publication) <= 7 
 GROUP BY i.IDIMAGE, i.titre, i.DESCRIPTION,c.idCategorie,c.nom
-HAVING COUNT(DISTINCT l.idUtilisateur) >= 1;
+HAVING COUNT(DISTINCT l.idUtilisateur) >= 5;
 
 
 -- *********************************************************

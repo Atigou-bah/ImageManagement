@@ -1,18 +1,16 @@
 -- Le nombre d’images publiées par catégorie au cours des deux dernières
 -- semaines.
 
-CREATE INDEX idx_image_datepub 
-ON IMAGE(date_publication);
+CREATE INDEX idx_image_datepub ON IMAGE(date_publication);
 
-CREATE INDEX idx_image_categorie
- ON IMAGE(idCategorie);
+CREATE INDEX idx_image_categorie ON IMAGE(idCategorie);
 
 SELECT 
     c.nom, 
     COUNT(i.idImage) AS nb_image
 FROM IMAGE i
 JOIN CATEGORIE c ON i.idCategorie = c.idCategorie
-WHERE TRUNC(SYSDATE) - TRUNC(date_publication) <= 14
+WHERE TRUNC(SYSDATE) - TRUNC(i.date_publication) <= 14
 GROUP BY c.nom
 ORDER BY nb_image DESC;
 
@@ -47,21 +45,9 @@ FROM UTILISATEUR u;
 CREATE INDEX idx_idImage ON IMAGE(idImage);
 CREATE INDEX idx_pays ON UTILISATEUR(pays);
 
-
-    -- CREATE OR REPLACE VIEW pays_like AS
-    -- SELECT
-    --     i.idImage,
-    --     u.pays AS pays_like,
-    --     COUNT(*) AS nb_likes
-    -- FROM IMAGE i
-    -- JOIN LIKES l ON i.idImage = l.idImage
-    -- JOIN UTILISATEUR u ON l.idUtilisateur = u.idUtilisateur
-    -- GROUP BY i.idImage, u.pays
-    -- ORDER BY i.idImage, nb_likes DESC;
-
 SELECT 
     idImage,
-    Max(NB_LIKES ) - min(NB_LIKES )  AS difference, 
+    Max(NB_LIKES ) - min(NB_LIKES )  AS difference
 FROM pays_like
 GROUP BY idImage;
 
@@ -70,6 +56,45 @@ GROUP BY idImage;
 -- Les images qui ont au moins deux fois plus de likes que la moyenne des images
 -- de leur catégorie.
 
+CREATE INDEX image_idCategorie_idx ON IMAGE(idCategorie);
+CREATE INDEX likes_idImage_idUtilisateur_idx ON LIKES(idImage, idUtilisateur);
+
+SELECT 
+    i.idImage,
+    i.idCategorie,
+    COUNT(l.idImage) AS nb_likes 
+FROM 
+    image i 
+    LEFT JOIN likes l ON l.idImage = i.idImage 
+GROUP BY i.idImage, i.idCategorie 
+HAVING
+    COUNT(l.idImage) >= 2 * ( 
+        SELECT 
+            AVG(nb_likes) 
+        FROM ( 
+            SELECT 
+                COUNT(*) AS nb_likes 
+            FROM 
+                IMAGE i2 
+                LEFT JOIN LIKES l2 ON l2.idImage = i2.idImage 
+            WHERE i2.idCategorie = i.idCategorie 
+            GROUP BY i2.idImage 
+        )
+    );
+
+
+
+-- Les 10 couples d'images les plus souvent likées ensemble par un même utilisateur.
+SELECT 
+    l1.idImage AS image1, 
+    l2.idImage AS image2, 
+    COUNT(*) AS nb_co_likes 
+FROM 
+    likes l1 
+    JOIN likes l2 ON l1.idUtilisateur = l2.idUtilisateur AND l1.idImage < l2.idImage 
+GROUP BY l1.idImage, l2.idImage 
+ORDER BY nb_co_likes DESC 
+FETCH FIRST 10 ROWS ONLY;
 
 
 

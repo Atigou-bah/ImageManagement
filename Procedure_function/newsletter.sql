@@ -29,15 +29,16 @@ BEGIN
 
     json_image := json_image || ']}';
 
-    IF compteur != 0 THEN
-        INSERT INTO NEWSLETTER(description, image, date_envoi)
-        VALUES (texte, json_image, SYSDATE);
-
-        DBMS_OUTPUT.PUT_LINE(
-            ' Une newsletter a été ajoutée avec succès avec ' || compteur || ' images.'
-        );
-    ELSE
+    IF compteur = 0 THEN
+        ROLLBACK; 
         RAISE_APPLICATION_ERROR(-20001, 'Aucune image récente trouvée.');
-    END IF;
+    END IF; 
+
+
+    INSERT INTO NEWSLETTER(description, image, date_envoi)
+    VALUES (texte, json_image, SYSDATE);
+    DBMS_OUTPUT.PUT_LINE(' Une newsletter a été ajoutée avec succès avec ' || compteur || ' images.');
+    COMMIT; 
+
 END;
 /
