@@ -46,10 +46,12 @@ CREATE INDEX idx_idImage ON IMAGE(idImage);
 CREATE INDEX idx_pays ON UTILISATEUR(pays);
 
 SELECT 
-    idImage,
+    p.idImage,
+    i.TITRE,
     Max(NB_LIKES ) - min(NB_LIKES )  AS difference
-FROM pays_like
-GROUP BY idImage;
+FROM pays_like p JOIN Image i 
+ON  i.IDIMAGE  = p.IDIMAGE 
+GROUP BY p.IDIMAGE,i.TITRE ; 
 
 
 
@@ -86,8 +88,8 @@ HAVING
 
 -- Les 10 couples d'images les plus souvent likées ensemble par un même utilisateur.
 SELECT 
-    l1.idImage AS image1, 
-    l2.idImage AS image2, 
+    l1.idImage AS image_1, 
+    l2.idImage AS image_2, 
     COUNT(*) AS nb_co_likes 
 FROM 
     likes l1 
